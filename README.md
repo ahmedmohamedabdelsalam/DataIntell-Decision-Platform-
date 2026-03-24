@@ -1,64 +1,65 @@
-# DataIntell — Professional Decision Intelligence Platform
+# DataIntell — Strategic Decision Intelligence Platform
 
-DataIntell is a production-grade Decision Intelligence System designed for executive-level data analysis and strategic forecasting. Built with a deterministic-first engine and high-logic causal analysis, it transforms raw datasets into actionable, monetized business recommendations with strict mathematical consistency.
+DataIntell is a high-performance analytical system designed for enterprise-level decision support and strategic asset management. The platform leverages deterministic mathematical models and advanced causal reasoning to transform complex datasets into high-confidence business strategies.
 
-## Key Capabilities
+## Core Capabilities
 
-1.  **Deterministic Logic Engine**: Unlike generic LLM wrappers, DataIntell uses a rigorous Python-based analytical core to calculate revenue decomposition, price elasticity (log-log OLS), and exact interaction effects.
-2.  **Self-Healing Data Pipeline**: Automatically detects and fixes data quality issues:
-    - **Leakage Protection**: Excludes features with high temporal correlation (|corr| ≥ 0.95) from causal models.
-    - **Anomaly Detection**: Hybrid Z-score and IQR-based filtering.
-    - **Intelligent Imputation**: Clean data handling for missing or corrupted values.
-3.  **Executive-Grade Recommendations**: Generates strategic advice with mandatory `feasibility_constraints` and `execution_methods` (e.g., A/B tests or pilot rollouts).
-4.  **Elasticity Stability Gates**: Statistically invalidates pricing power claims if the aggregate price effect is negative or if elasticity is unstable (|ε| > 5).
-5.  **Modern Enterprise UI**: A high-performance React dashboard featuring real-time execution logs, multi-page analytics, and interactive charts.
+### 1. Deterministic Analytical Framework
+- **Revenue Decomposition**: Exact quantification of Price vs. Volume vs. Interaction effects on YoY performance.
+- **Dynamic Price Elasticity**: Implementation of Log-Log OLS regression for precise sensitivity analysis.
+- **Interaction Logic**: Identification of cross-feature dependencies that impact aggregate profitability.
 
-## Technology Stack
+### 2. High-Fidelity Data Pipeline
+- **Temporal Correlation Shield**: Automated exclusion of features with high multicollinearity (|corr| ≥ 0.95) to prevent causal overfitting.
+- **Stability Gates**: Automated invalidation of recommendations when elasticity estimates exceed predefined stability thresholds (|ε| > 5).
+- **Advanced Imputation**: Multi-layered data cleaning and restoration protocols for corrupted or missing values.
 
-- **Backend**: Python 3.10+, FastAPI, Pandas, NumPy, Scikit-Learn, Statsmodels.
-- **Frontend**: React 18, Vite, Tailwind CSS, Lucide Icons, Recharts, Zustand.
-- **Analysis Core**: Google Gemini 2.0 (Logic Layer) + Deterministic Mathematical Engine.
+### 3. Execution-Focused Strategy
+- **Feasibility Constraints**: Mandatory risk-cost assessment for every generated strategic advice.
+- **Validated Methodology**: Requirements for empirical validation via A/B testing or pilot implementations before full-scale rollout.
 
-## Setup & Execution
+## Technical Architecture
+
+- **Backend Architecture**: Python 3.10+ utilizing NumPy, Pandas, Scikit-Learn, and Statsmodels for statistical integrity.
+- **Frontend Infrastructure**: React 18 & Vite utilizing TypeScript for high-performance state management and data visualization.
+- **System Logic**: High-logic reasoning layer integrated with a deterministic execution core.
+
+## Implementation Guide
 
 ### 1. Requirements
-Ensure you have Python 3.10+ and Node.js 18+ installed.
+Python 3.10+ and Node.js 18+ environment must be established.
 
-### 2. Backend Configuration
+### 2. Service Layer Configuration
 Create a `.env` file in the root directory:
 ```env
-GOOGLE_GEMINI_API_KEY=your_gemini_api_key_here
+GOOGLE_GEMINI_API_KEY=your_authentication_key
 ```
 
-Install dependencies and start the server:
+Execute the following commands to initialize the backend:
 ```bash
 pip install -r requirements.txt
-uvicorn main:app --reload
+uvicorn main:app --host 0.0.0.0 --port 8000
 ```
 
-### 3. Frontend Configuration
+### 3. Interface Layer Configuration
 Create a `frontend/.env` file:
 ```env
-VITE_API_BASE_URL=http://127.0.0.1:8000
+VITE_API_BASE_URL=http://localhost:8000
 ```
 
-Install dependencies and start the dev server:
+Execute the following commands to initialize the frontend:
 ```bash
 cd frontend
 npm install
 npm run dev
 ```
 
-## Project Structure
+## Internal Structure
 
-- `/tools`: Deterministic analytical engines and ML models.
-- `/agent`: Logic for task parsing, planning, and tool execution.
-- `/frontend`: Responsive React dashboard.
-- `main.py`: FastAPI entry point and file upload management.
-
-## Deployment
-
-Designed for seamless deployment on platforms like Hugging Face Spaces or Vercel/Render. Ensure environment variables are correctly mapped in the production dashboard.
+- `/tools`: Mathematical engines and ML-based processing modules.
+- `/agent`: Planning and execution coordination logic.
+- `/frontend`: Responsive dashboard architecture.
+- `main.py`: Primary API entry point and file management system.
 
 ---
-*Developed for high-stakes business analysis and strategic decision support.*
+*DataIntell: Precision Engineering for Strategic Support.*
