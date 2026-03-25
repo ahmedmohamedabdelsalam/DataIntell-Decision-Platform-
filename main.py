@@ -5,6 +5,8 @@ from fastapi import FastAPI, HTTPException, UploadFile, File
 from pydantic import BaseModel
 from dotenv import load_dotenv
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.staticfiles import StaticFiles
+from fastapi.responses import FileResponse
 
 # Step 1: ENV SETUP in code
 load_dotenv()
@@ -17,8 +19,8 @@ if not api_key:
 from agent.executor import run_agent
 
 app = FastAPI(
-    title="AI Agent System", 
-    description="An AI agent system from scratch that plans and executes tools",
+    title="DataIntell — Decision Intelligence Platform", 
+    description="Enterprise-grade strategic analysis and deterministic decision support system.",
     version="1.0.0"
 )
 
@@ -76,3 +78,14 @@ def run_task_endpoint(request: TaskRequest):
     except Exception as e:
         # Step 9: ERROR HANDLING
         raise HTTPException(status_code=500, detail=str(e))
+
+# Serve Frontend Static Files
+if os.path.exists("frontend/dist"):
+    app.mount("/", StaticFiles(directory="frontend/dist", html=True), name="static")
+
+@app.exception_handler(404)
+async def not_found_handler(request, exc):
+    if os.path.exists("frontend/dist/index.html"):
+        return FileResponse("frontend/dist/index.html")
+    return HTTPException(status_code=404, detail="Not Found")
+

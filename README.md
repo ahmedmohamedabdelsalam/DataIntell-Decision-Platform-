@@ -1,3 +1,9 @@
+---
+title: "DataIntell — Strategic Decision Intelligence Platform"
+sdk: docker
+app_port: 8000
+---
+
 # DataIntell — Strategic Decision Intelligence Platform
 
 DataIntell is a high-performance analytical system designed for enterprise-level decision support and strategic asset management. The platform leverages deterministic mathematical models and advanced causal reasoning to transform complex datasets into high-confidence business strategies.
