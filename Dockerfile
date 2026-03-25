@@ -11,6 +11,17 @@ RUN npm run build
 FROM python:3.10-slim
 WORKDIR /app
 
+# System deps for scientific python wheels (and fallback to source builds)
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    build-essential \
+    gfortran \
+    libopenblas-dev \
+    liblapack-dev \
+    && rm -rf /var/lib/apt/lists/*
+
+# Ensure pip tooling is modern for dependency builds
+RUN pip install --no-cache-dir --upgrade pip setuptools wheel
+
 # Install Python dependencies
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
