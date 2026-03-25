@@ -1,6 +1,7 @@
 import os
 import shutil
 import uuid
+import logging
 from fastapi import FastAPI, HTTPException, UploadFile, File
 from pydantic import BaseModel
 from dotenv import load_dotenv
@@ -12,8 +13,11 @@ from fastapi.responses import FileResponse
 load_dotenv()
 api_key = os.getenv("GOOGLE_GEMINI_API_KEY")
 
+logger = logging.getLogger(__name__)
 if not api_key:
-    raise RuntimeError("Missing GOOGLE_GEMINI_API_KEY in environment variables.")
+    # Do not fail container startup: the LLM layer has deterministic fallback.
+    logger.warning("Missing GOOGLE_GEMINI_API_KEY. LLM narrative features will be disabled.")
+    api_key = None
 
 # Import the core agent execution flow
 from agent.executor import run_agent
