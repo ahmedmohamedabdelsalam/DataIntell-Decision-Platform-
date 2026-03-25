@@ -2,6 +2,11 @@
 title: "DataIntell — Strategic Decision Intelligence Platform"
 sdk: docker
 app_port: 8000
+emoji: 📊
+colorFrom: purple
+colorTo: gray
+pinned: false
+license: apache-2.0
 ---
 
 # DataIntell — Strategic Decision Intelligence Platform
@@ -69,3 +74,4 @@ npm run dev
 
 ---
 *DataIntell: Precision Engineering for Strategic Support.*
+Check out the configuration reference at https://huggingface.co/docs/hub/spaces-config-reference
