@@ -1,7 +1,7 @@
 ---
 title: "DataIntell — Strategic Decision Intelligence Platform"
 sdk: docker
-app_port: 8000
+app_port: 7860
 emoji: 📊
 colorFrom: purple
 colorTo: gray

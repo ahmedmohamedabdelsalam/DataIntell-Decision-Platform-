@@ -21,10 +21,9 @@ COPY . .
 # Copy built frontend assets from Stage 1
 COPY --from=build-frontend /app/frontend/dist ./frontend/dist
 
-# Expose port (Hugging Face expects 7860 or we can use 8000)
-# Hugging Face Spaces default is 7860, but it can adapt. Let's use 8000.
-EXPOSE 8000
+# Expose port (Hugging Face expects 7860 for Docker Spaces)
+EXPOSE 7860
 
 # Run with uvicorn
-CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000"]
+CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "7860"]
 
