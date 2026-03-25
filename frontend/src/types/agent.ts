@@ -104,6 +104,7 @@ export interface Recommendation {
   action: string;
   segment?: string;
   numeric_target?: string;
+  justification?: string;
   expected_impact: string;
   risk_level: 'high' | 'medium' | 'low' | string;
   confidence: number;
