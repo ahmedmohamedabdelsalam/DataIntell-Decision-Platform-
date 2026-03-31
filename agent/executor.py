@@ -1,5 +1,6 @@
 import time
 import logging
+import math
 from agent.parser import parse_task
 from agent.planner import create_execution_plan
 from tools.data_tools import load_data_tool, summary_tool, correlation_tool, anomaly_tool
@@ -8,6 +9,43 @@ from tools.llm_tools import generate_insights_tool
 
 logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(name)s - %(levelname)s - %(message)s")
 logger = logging.getLogger(__name__)
+
+try:
+    import numpy as np
+except Exception:  # pragma: no cover
+    np = None
+
+
+def _sanitize_for_json(value):
+    """
+    Convert NaN/Infinity to None so FastAPI/Pydantic JSON serialization never fails.
+    Works recursively for dict/list/tuples.
+    """
+    if value is None:
+        return None
+
+    if isinstance(value, float):
+        if math.isnan(value) or math.isinf(value):
+            return None
+        return value
+
+    if np is not None:
+        # numpy scalars (np.float32/np.float64/etc.)
+        if isinstance(value, np.generic):
+            try:
+                py_val = value.item()
+                return _sanitize_for_json(py_val)
+            except Exception:
+                return None
+
+    if isinstance(value, dict):
+        return {str(k): _sanitize_for_json(v) for k, v in value.items()}
+
+    if isinstance(value, (list, tuple)):
+        return [_sanitize_for_json(v) for v in value]
+
+    return value
+
 
 def execute_plan(plan: list, initial_context: dict) -> tuple:
     """Executes the execution plan step-by-step and handles tools logic."""
@@ -109,7 +147,7 @@ def run_agent(task_instruction: str, file_id: str | None = None) -> dict:
         insights = context.get("insights", {})
         analysis = context.get("analysis", {})
         
-        return {
+        response = {
             "task": task_instruction,
             "intent": parsed_task.get("intent", "unknown"),
             "plan": [step["action"] for step in plan],
@@ -130,12 +168,15 @@ def run_agent(task_instruction: str, file_id: str | None = None) -> dict:
             "execution_time_seconds": round(execution_time, 2),
             "status": "success"
         }
+
+        # Prevent JSON encoding errors (e.g. NaN from pandas describe/corr).
+        return _sanitize_for_json(response)
         
     except Exception as e:
         execution_time = time.time() - start_time
         logger.error(f"Agent flow interrupted: {e}")
-        
-        return {
+
+        response = {
             "task": task_instruction,
             "intent": "unknown",
             "plan": [],
@@ -144,3 +185,5 @@ def run_agent(task_instruction: str, file_id: str | None = None) -> dict:
             "execution_time_seconds": round(execution_time, 2),
             "status": "error"
         }
+
+        return _sanitize_for_json(response)

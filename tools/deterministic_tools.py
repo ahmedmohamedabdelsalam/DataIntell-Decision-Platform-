@@ -544,11 +544,16 @@ def compute_deterministic_insights(df: pd.DataFrame, analysis: dict) -> dict:
         confidence_log.append(f"{unstable_count} unstable elasticity segments: -{min(unstable_count*0.05, 0.20)}")
 
     # Summary elasticity for schema compatibility
+    # Ensure defaults exist even when elasticity_by_region is empty.
+    stable_eps: list[float] = []
+    avg_eps: float = 0.0
     if elasticity_by_region:
         stable_eps = [e['epsilon'] for e in stable_regions.values()]
         avg_eps = float(np.mean(stable_eps)) if stable_eps else 0.0
+
     is_overall_price_negative = False
-    if len(ya) >= 2:
+    # ya may be None when required columns are missing (e.g. bad schema).
+    if ya is not None and len(ya) >= 2:
         d_p = float(ya.iloc[-1]['Avg_Price_EUR'] - ya.iloc[-2]['Avg_Price_EUR'])
         if d_p < 0:
             is_overall_price_negative = True
